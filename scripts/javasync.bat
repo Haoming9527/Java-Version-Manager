@@ -1,6 +1,13 @@
 @echo off
 setlocal enabledelayedexpansion
 
+:: Check for Administrator privileges
+openfiles >nul 2>&1
+if errorlevel 1 (
+    echo [!] ERROR: Please run this script as ADMINISTRATOR. 
+    exit /b 1
+)
+
 echo Scanning for installed JDKs in C:\Program Files\Java...
 echo.
 
@@ -8,7 +15,7 @@ set "SCRIPT_DIR=%~dp0"
 set "JAVA_BASE=C:\Program Files\Java"
 
 :: Create missing wrapper scripts
-echo 1. Checking for new JDKs...
+echo Checking for new JDKs...
 set "CREATED_COUNT=0"
 for /d %%d in ("%JAVA_BASE%\jdk-*") do (
     set "FOLDER_NAME=%%~nxd"
@@ -39,7 +46,7 @@ if !CREATED_COUNT! equ 0 echo   (No new scripts created)
 echo.
 
 :: Delete orphaned wrapper scripts
-echo 2. Cleaning up orphaned scripts...
+echo Cleaning up orphaned scripts...
 set "DELETED_COUNT=0"
 for %%f in ("!SCRIPT_DIR!java*.bat") do (
     set "FILENAME=%%~nxf"
@@ -68,5 +75,5 @@ for %%f in ("!SCRIPT_DIR!java*.bat") do (
 if !DELETED_COUNT! equ 0 echo   (No orphaned scripts found)
 
 echo.
-echo Sync complete! (!CREATED_COUNT! created, !DELETED_COUNT! deleted)
+echo Sync complete - !CREATED_COUNT! created, !DELETED_COUNT! deleted.
 echo Use 'javalist' to see all versions or type 'javaXX' to switch.
