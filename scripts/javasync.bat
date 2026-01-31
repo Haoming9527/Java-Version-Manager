@@ -8,6 +8,8 @@ set "SCRIPT_DIR=%~dp0"
 set "JAVA_BASE=C:\Program Files\Java"
 
 :: Create missing wrapper scripts
+echo 1. Checking for new JDKs...
+set "CREATED_COUNT=0"
 for /d %%d in ("%JAVA_BASE%\jdk-*") do (
     set "FOLDER_NAME=%%~nxd"
     
@@ -25,15 +27,20 @@ for /d %%d in ("%JAVA_BASE%\jdk-*") do (
     set "BAT_FILE=!SCRIPT_DIR!java!MAJOR_VER!.bat"
     
     if not exist "!BAT_FILE!" (
-        echo [+] Creating java!MAJOR_VER!.bat
+        echo   [+] Created java!MAJOR_VER!.bat
+        set /a CREATED_COUNT+=1
         (
             echo @echo off
             echo call "%%~dp0javax.bat" java!MAJOR_VER!
         ) > "!BAT_FILE!"
     )
 )
+if !CREATED_COUNT! equ 0 echo   (No new scripts created)
+echo.
 
 :: Delete orphaned wrapper scripts
+echo 2. Cleaning up orphaned scripts...
+set "DELETED_COUNT=0"
 for %%f in ("!SCRIPT_DIR!java*.bat") do (
     set "FILENAME=%%~nxf"
     if /i not "!FILENAME!"=="javax.bat" if /i not "!FILENAME!"=="javalist.bat" if /i not "!FILENAME!"=="javasync.bat" if /i not "!FILENAME!"=="javahelp.bat" (
@@ -42,17 +49,24 @@ for %%f in ("!SCRIPT_DIR!java*.bat") do (
         
         set "MATCH_FOUND=0"
         if !VERSION_NUM! leq 8 (
-            if exist "%JAVA_BASE%\jdk-1.!VERSION_NUM!*" set "MATCH_FOUND=1"
+            set "SEARCH_PATTERN=jdk-1.!VERSION_NUM!*"
         ) else (
-            if exist "%JAVA_BASE%\jdk-!VERSION_NUM!*" set "MATCH_FOUND=1"
+            set "SEARCH_PATTERN=jdk-!VERSION_NUM!*"
+        )
+        
+        for /d %%d in ("%JAVA_BASE%\!SEARCH_PATTERN!") do (
+            set "MATCH_FOUND=1"
         )
         
         if "!MATCH_FOUND!"=="0" (
-            echo [-] Deleting !FILENAME! (JDK missing)
+            echo   [-] Deleted !FILENAME! (JDK missing)
+            set /a DELETED_COUNT+=1
             del "%%f"
         )
     )
 )
+if !DELETED_COUNT! equ 0 echo   (No orphaned scripts found)
 
 echo.
-echo Sync complete! Use 'javalist' to see all versions or type 'javaXX' to switch.
+echo Sync complete! (!CREATED_COUNT! created, !DELETED_COUNT! deleted)
+echo Use 'javalist' to see all versions or type 'javaXX' to switch.

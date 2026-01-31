@@ -1,5 +1,5 @@
 @echo off
-echo Java Version Manager v1.0 - Help
+echo Java Version Manager v1.1 - Help
 echo ============================
 echo Usage:
 echo   javaXX      Switch to Java version XX (e.g., java11, java17, java25)
