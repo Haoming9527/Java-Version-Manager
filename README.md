@@ -1,4 +1,4 @@
-# Java Version Switcher User Guide
+# Java Version Manager v1.0 User Guide
 
 This guide explains how to switch between multiple installed Java versions (e.g., Java 8, 11, 17, 25) using custom batch (`.bat`) scripts. All switches are permanent at the system level.
 
@@ -35,34 +35,25 @@ This guide explains how to switch between multiple installed Java versions (e.g.
 6.  **Refresh Terminal**:
     Open a new terminal window to apply changes.
 
-7.  **Switch Versions**:
-    Simply type the version command:
+7.  **Get Help**:
+    Use the `javahelp` command for usage instructions:
     ```cmd
-    java11
-    java17
-    java25
-    ```
-
-8.  **List Installed Versions**:
-    Use the `javalist` command to see all available JDKs:
-    ```cmd
-    javalist
+    javahelp
     ```
 
 ## 🛠 Adding a New Version (e.g., Java 25)
 
 1.  **Install the JDK**:
-    Install to: `C:\Program Files\Java\jdk-25`
+    Install to: `C:\Program Files\Java\jdk-25` (or any minor version like `jdk-25.0.2`)
 
-2.  **Create Wrapper File**:
-    Create `java25.bat` in the scripts folder:
-    ```batch
-    @echo off
-    call "%~dp0javax.bat" java25
+2.  **Run Sync**:
+    Run the following command to automatically generate the new script:
+    ```cmd
+    javasync
     ```
 
 3.  **Use It**:
-    Close and reopen your terminal, then run:
+    You can now immediately use:
     ```cmd
     java25
     ```
