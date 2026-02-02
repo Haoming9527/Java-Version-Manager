@@ -58,16 +58,18 @@ for %%f in ("!SCRIPT_DIR!java*.bat") do (
         
         :: Check if corresponding JDK exists using the same logic as javax.bat
         if !VERSION_NUM! leq 8 (
-            set "SEARCH_PATTERN=jdk-1.!VERSION_NUM!*"
+            set "SEARCH_PATTERN=jdk-1.!VERSION_NUM!"
         ) else (
-            set "SEARCH_PATTERN=jdk-!VERSION_NUM!*"
+            set "SEARCH_PATTERN=jdk-!VERSION_NUM!"
         )
         
         :: Check if any JDK folder matches the pattern
-        for /d %%d in ("%JAVA_BASE%\!SEARCH_PATTERN!") do set "MATCH_FOUND=1"
+        for /d %%d in ("%JAVA_BASE%\!SEARCH_PATTERN!*") do (
+            set "MATCH_FOUND=1"
+        )
         
         if "!MATCH_FOUND!"=="0" (
-            echo   [-] Deleted !FILENAME! (JDK missing)
+            echo   [-] Deleted !FILENAME! - JDK missing - searched for !SEARCH_PATTERN!
             set /a DELETED_COUNT+=1
             del "%%f"
         )
