@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 :: Check for Administrator privileges
 openfiles >nul 2>&1
 if errorlevel 1 (
-    echo [!] ERROR: Please run this script as ADMINISTRATOR. 
+    echo ERROR: Please run this script as ADMINISTRATOR. 
     exit /b 1
 )
 
@@ -55,15 +55,16 @@ for %%f in ("!SCRIPT_DIR!java*.bat") do (
         set "VERSION_NUM=!VERSION_NUM:.bat=!"
         
         set "MATCH_FOUND=0"
+        
+        :: Check if corresponding JDK exists using the same logic as javax.bat
         if !VERSION_NUM! leq 8 (
             set "SEARCH_PATTERN=jdk-1.!VERSION_NUM!*"
         ) else (
             set "SEARCH_PATTERN=jdk-!VERSION_NUM!*"
         )
         
-        for /d %%d in ("%JAVA_BASE%\!SEARCH_PATTERN!") do (
-            set "MATCH_FOUND=1"
-        )
+        :: Check if any JDK folder matches the pattern
+        for /d %%d in ("%JAVA_BASE%\!SEARCH_PATTERN!") do set "MATCH_FOUND=1"
         
         if "!MATCH_FOUND!"=="0" (
             echo   [-] Deleted !FILENAME! (JDK missing)
