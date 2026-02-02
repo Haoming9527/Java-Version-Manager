@@ -44,7 +44,7 @@ This guide explains how to switch between multiple installed Java versions (e.g.
 ## 🛠 Adding a New Version (e.g., Java 25)
 
 1.  **Install the JDK**:
-    Install to: `C:\Program Files\Java\jdk-25` (or any minor version like `jdk-25.0.2`)
+    Install to: `C:\Program Files\Java\jdk-25`
 
 2.  **Run Sync**:
     Run the following command to automatically generate the new script:
