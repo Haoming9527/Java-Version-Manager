@@ -36,10 +36,8 @@ for /d %%d in ("%JAVA_BASE%\jdk-*") do (
     if not exist "!BAT_FILE!" (
         echo   [+] Created java!MAJOR_VER!.bat
         set /a CREATED_COUNT+=1
-        (
-            echo @echo off
-            echo call "%%~dp0javax.bat" java!MAJOR_VER!
-        ) > "!BAT_FILE!"
+        echo @echo off > "!BAT_FILE!"
+        echo call "%%~dp0javax.bat" java!MAJOR_VER! >> "!BAT_FILE!"
     )
 )
 if !CREATED_COUNT! equ 0 echo   (No new scripts created)

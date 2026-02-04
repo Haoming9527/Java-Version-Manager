@@ -1,4 +1,4 @@
-# Java Version Manager v1.1 User Guide
+# Java Version Manager v1.2 User Guide
 
 This guide explains how to switch between multiple installed Java versions (e.g., Java 8, 11, 17, 25) using custom batch (`.bat`) scripts. All switches are permanent at the system level.
 
