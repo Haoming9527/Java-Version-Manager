@@ -17,8 +17,9 @@ set "JAVA_BASE=C:\Program Files\Java"
 :: Create missing wrapper scripts
 echo Checking for new JDKs...
 set "CREATED_COUNT=0"
-for /d %%d in ("%JAVA_BASE%\jdk-*") do (
-    set "FOLDER_NAME=%%~nxd"
+
+for /d %%j in ("%JAVA_BASE%\jdk-*") do (
+    set "FOLDER_NAME=%%~nxj"
     
     :: Extract major version
     set "VER_STR=!FOLDER_NAME:jdk-=!"
